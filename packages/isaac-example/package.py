@@ -69,7 +69,8 @@ class IsaacExample(CMakePackage):
         return args
 
     def install(self, spec, prefix):
+        mkdirp(prefix.bin)
         if '+alpaka' in spec:
-            install('spack-build/example_alpaka', prefix.bin)
+            install('spack-build/example_alpaka', join_path(prefix.bin, 'example_alpaka'))
         if '+cuda' in spec:
-            install('spack-build/example_cuda', prefix.bin)
+            install('spack-build/example_cuda', join_path(prefix.bin, 'example_cuda'))
