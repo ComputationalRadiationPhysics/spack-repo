@@ -19,7 +19,7 @@ First, [install spack](http://spack.readthedocs.io)
 Second, add this repository for additional build recipes:
 
 ```bash
-git clone https://github.com/ComputationalRadiationPhysics/picongpu.git \
+git clone https://github.com/ComputationalRadiationPhysics/spack-repo.git \
     $HOME/src/spack-repo
 spack repo add $HOME/src/spack-repo
 ```
