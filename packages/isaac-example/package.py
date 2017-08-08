@@ -61,7 +61,15 @@ class IsaacExample(CMakePackage):
             '-DISAAC_DIR={0}'.format(
                 spec['isaac'].prefix)
         ]
-        if 'alpaka' in spec:
+        if '+alpaka' in spec:
             args.append('-DALPAKA_ROOT={0}'.format(
                 spec['alpaka'].prefix))
+            if '~cuda' in spec:
+                args.append('-DALPAKA_ACC_GPU_CUDA_ENABLE:BOOL=OFF')
         return args
+
+    def install(self, spec, prefix):
+        if '+alpaka' in spec:
+            install('spack-build/example_alpaka', prefix.bin)
+        if '+cuda' in spec:
+            install('spack-build/example_cuda', prefix.bin)
