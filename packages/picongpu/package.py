@@ -31,7 +31,7 @@ class Picongpu(Package):
     homepage = "https://github.com/ComputationalRadiationPhysics/picongpu"
     url      = "https://github.com/ComputationalRadiationPhysics/picongpu/archive/0.4.0.tar.gz"
 
-    version('develop', branch='develop',
+    version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
@@ -45,6 +45,10 @@ class Picongpu(Package):
             values=('cuda', 'omp2b'),
             multi=False,
             description='Control the computing backend')
+    variant('cudacxx', default='nvcc',
+            values=('nvcc', 'clang'),
+            multi=False,
+            description='Device compiler for the CUDA backend')
     variant('png', default=True,
             description='Enable the PNG plugin')
     variant('hdf5', default=True,
@@ -75,6 +79,17 @@ class Picongpu(Package):
     # C++11
     conflicts('%gcc@:4.8')
     conflicts('%clang@:3.4')
+
+    # NVCC host-compiler incompatibility list
+    #   https://gist.github.com/ax3l/9489132
+    conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:7.5')
+    conflicts('%gcc@6:', when='backend=cuda cudacxx=nvcc ^cuda@:8')
+    conflicts('%gcc@7:', when='backend=cuda cudacxx=nvcc ^cuda@:9')
+    conflicts('%clang@:3.4,3.7:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
+    conflicts('%clang@:3.7,4:', when='backend=cuda cudacxx=nvcc ^cuda@8:9')
+    conflicts('%intel@:14,16:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
+    conflicts('%intel@:14,17:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.44')
+    conflicts('%intel@:14,18:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.61:9')
 
     def install(self, spec, prefix):
         install_tree('bin', join_path(prefix, 'bin'))
