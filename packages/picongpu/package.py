@@ -105,9 +105,11 @@ class Picongpu(Package):
         install('pic-create', prefix)
 
     def setup_environment(self, spack_env, run_env):
-        run_env.prepend_path('PICSRC', self.prefix)
+        run_env.set('PICSRC', self.prefix)
         # note: still a PIC_PROFILE export and/or picongpu.profile expected
         run_env.prepend_path('PATH', self.prefix)
+        run_env.prepend_path('PATH',
+                             join_path(self.prefix, 'bin'))
         run_env.prepend_path('PATH',
                              join_path(self.prefix, 'src/tools/bin'))
         run_env.prepend_path('PYTHONPATH',
