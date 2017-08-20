@@ -60,7 +60,7 @@ class Picongpu(Package):
 
     # @TODO add type=('link, 'run') to all these?
     # @TODO define supported ranges instead of fixed versions
-    depends_on('cmake@3.7.2', type='build')
+    depends_on('cmake@3.7:3.9', type='build')
     depends_on('cuda@8.0.61', when='backend=cuda')
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0')
