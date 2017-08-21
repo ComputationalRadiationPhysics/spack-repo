@@ -45,7 +45,7 @@ class Grpc(CMakePackage):
     patch('internalheader.patch', when='@:1.4.3')
 
     depends_on('cmake@3.0.0:', type='build')
-    depends_on('protobuf@3.0.2:')
+    depends_on('protobuf@3.4.0:')
     depends_on('zlib')
     depends_on('openssl')
     depends_on('cares@1.13.0:')
