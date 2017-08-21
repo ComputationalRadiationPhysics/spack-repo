@@ -121,7 +121,10 @@ class Picongpu(Package):
         ld_library_path = []
         bin_path = []
         for x in self.spec.traverse():
-            cmake_prefix_path.append(x.prefix)
+            if str(x).startswith('icet'):
+                cmake_prefix_path.append(x.prefix.lib)
+            else:
+                cmake_prefix_path.append(x.prefix)
             ld_library_path.append(x.prefix.lib)
             bin_path.append(x.prefix.bin)
 
