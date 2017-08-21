@@ -118,6 +118,7 @@ class Picongpu(Package):
         # pre-load depends
         #  https://github.com/LLNL/spack/issues/2378#issuecomment-316364232
         cmake_prefix_path = []
+        include_path = []
         ld_library_path = []
         bin_path = []
         for x in self.spec.traverse():
@@ -127,7 +128,9 @@ class Picongpu(Package):
                 cmake_prefix_path.append(x.prefix)
             ld_library_path.append(x.prefix.lib)
             bin_path.append(x.prefix.bin)
+            include_path.append(x.prefix.include)
 
         run_env.prepend_path('CMAKE_PREFIX_PATH', ':'.join(cmake_prefix_path))
+        run_env.prepend_path('CPATH', ':'.join(include_path))
         run_env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
         run_env.prepend_path('PATH', ':'.join(bin_path))
