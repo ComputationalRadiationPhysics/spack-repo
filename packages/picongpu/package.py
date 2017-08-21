@@ -60,7 +60,7 @@ class Picongpu(Package):
 
     # @TODO add type=('link, 'run') to all these?
     # @TODO define supported ranges instead of fixed versions
-    depends_on('cmake@3.7:3.9', type=('build', 'run'))
+    depends_on('cmake@3.7:3.9', type='build')
     depends_on('cuda@8.0.61', when='backend=cuda')
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0')
@@ -114,3 +114,17 @@ class Picongpu(Package):
         run_env.prepend_path('PYTHONPATH',
                              join_path(self.prefix, 'src/tools/lib/python'))
         # optional: default for TBG_SUBMIT, TBG_TPLFILE
+
+        # pre-load depends
+        #  https://github.com/LLNL/spack/issues/2378#issuecomment-316364232
+        cmake_prefix_path = []
+        ld_library_path = []
+        bin_path = []
+        for x in self.spec.traverse():
+            cmake_prefix_path.append(x.prefix)
+            ld_library_path.append(x.prefix.lib)
+            bin_path.append(x.prefix.bin)
+
+        run_env.prepend_path('CMAKE_PREFIX_PATH', ':'.join(cmake_prefix_path))
+        run_env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
+        run_env.prepend_path('PATH', ':'.join(bin_path))
