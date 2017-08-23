@@ -112,7 +112,7 @@ class Picongpu(Package):
         run_env.prepend_path('PATH',
                              join_path(self.prefix, 'src/tools/bin'))
         run_env.prepend_path('PYTHONPATH',
-                             join_path(self.prefix, 'src/tools/lib/python'))
+                             join_path(self.prefix, 'lib/python'))
         # optional: default for TBG_SUBMIT, TBG_TPLFILE
 
         # pre-load depends
