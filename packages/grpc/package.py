@@ -29,20 +29,12 @@ class Grpc(CMakePackage):
     """A high performance, open-source universal RPC framework"""
 
     homepage = "https://grpc.io"
-    url      = "https://github.com/grpc/grpc/archive/v1.4.2.tar.gz"
+    url      = "https://github.com/grpc/grpc/archive/v1.6.0.tar.gz"
 
     version('develop', branch='master',
             git='https://github.com/grpc/grpc.git')
 
-    # version('1.5.0', '')
-
-    # broken c-ares find_package call:
-    # version('1.4.3', 'b373c787e0db53afc575afc04b74f19c')
-    # version('1.4.2', 'de84c023389b7c36025f4bd0703c5a1e')
-    # version('1.3.9', 'f29b35aed1523d0361d9fd40c19723e2')
-
-    # only needed before 1.5.0
-    patch('internalheader.patch', when='@:1.4.3')
+    version('1.6.0', '0142fc5ea622d996376bd4eebff07d00')
 
     depends_on('cmake@3.0.0:', type='build')
     depends_on('protobuf@3.4.0:')
