@@ -62,6 +62,5 @@ class Graybat(CMakePackage):
     depends_on('mpi', type='link', when='+mpi')
     depends_on('cppzmq@4.2.2:', type='link', when='+zeromq')
     depends_on('metis@5.1.0:', type='link', when='+metis')
-    depends_on('protobuf@3.0.0:')  # , when='@:1.2.0')
-    # should be included in upcoming 1.5.0+
-    depends_on('grpc@develop', when='+grpc')
+    depends_on('protobuf@3.4.0:')  # , when='@:1.2.0')
+    depends_on('grpc@1.6.0+shared', when='+grpc')
