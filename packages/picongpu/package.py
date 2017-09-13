@@ -95,6 +95,7 @@ class Picongpu(Package):
         install_tree('buildsystem', join_path(prefix, 'buildsystem'))
         install_tree('etc', join_path(prefix, 'etc'))
         install_tree('include', join_path(prefix, 'include'))
+        install_tree('lib', join_path(prefix, 'lib'))
         install_tree('src', join_path(prefix, 'src'))
         install_tree('share', join_path(prefix, 'share'))
         install_tree('thirdParty', join_path(prefix, 'thirdParty'))
@@ -105,6 +106,10 @@ class Picongpu(Package):
 
     def setup_environment(self, spack_env, run_env):
         run_env.set('PICSRC', self.prefix)
+        if 'backend=cuda' in self.spec:
+            run_env.set('PIC_BACKEND', 'cuda')
+        elif 'backend=omp2b' in self.spec:
+            run_env.set('PIC_BACKEND', 'omp2b')
         # note: still a PIC_PROFILE export and/or picongpu.profile expected
         run_env.prepend_path('PATH', self.prefix)
         run_env.prepend_path('PATH',
