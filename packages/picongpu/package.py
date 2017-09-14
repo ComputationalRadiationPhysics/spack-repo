@@ -91,26 +91,41 @@ class Picongpu(Package):
     conflicts('%intel@:14,18:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.61:9')
 
     def install(self, spec, prefix):
-        install_tree('bin', join_path(prefix, 'bin'))
+        path_bin = join_path(prefix, 'bin')
+        path_etc = join_path(prefix, 'etc')
+        path_include = join_path(prefix, 'include')
+        path_lib = join_path(prefix, 'lib')
+        path_share = join_path(prefix, 'share')
+
+        install_tree('bin', path_bin)
         install_tree('buildsystem', join_path(prefix, 'buildsystem'))
-        install_tree('etc', join_path(prefix, 'etc'))
-        install_tree('include', join_path(prefix, 'include'))
-        install_tree('lib', join_path(prefix, 'lib'))
+        install_tree('etc', path_etc)
+        install_tree('include', path_include)
+        install_tree('lib', path_lib)
         install_tree('src', join_path(prefix, 'src'))
-        install_tree('share', join_path(prefix, 'share'))
+        install_tree('share', path_share)
         install_tree('thirdParty', join_path(prefix, 'thirdParty'))
         install('pic-build', prefix)
         install('pic-compile', prefix)
         install('pic-configure', prefix)
         install('pic-create', prefix)
 
+        profile = join_path(path_etc, 'picongpu', 'picongpu.profile')
+        with open(profile, 'w') as pf:
+            pf.write('export PIC_PROFILE=$(cd $(dirname $BASH_SOURCE) ' +
+                     '&& pwd)"/"$(basename $BASH_SOURCE)\n\n')
+            pf.write('spack load {0}\n'.format(spec))
+
     def setup_environment(self, spack_env, run_env):
         run_env.set('PICSRC', self.prefix)
+        run_env.set('PIC_PROFILE',
+                    join_path(self.prefix, 'etc', 'picongpu',
+                              'picongpu.profile'))
         if 'backend=cuda' in self.spec:
             run_env.set('PIC_BACKEND', 'cuda')
         elif 'backend=omp2b' in self.spec:
             run_env.set('PIC_BACKEND', 'omp2b')
-        # note: still a PIC_PROFILE export and/or picongpu.profile expected
+
         run_env.prepend_path('PATH', self.prefix)
         run_env.prepend_path('PATH',
                              join_path(self.prefix, 'bin'))
