@@ -24,6 +24,8 @@
 ##############################################################################
 from spack import *
 
+import os
+
 
 class Picongpu(Package):
     """PIConGPU: A particle-in-cell code for GPGPUs"""
@@ -110,11 +112,13 @@ class Picongpu(Package):
         install('pic-configure', prefix)
         install('pic-create', prefix)
 
-        profile = join_path(path_etc, 'picongpu', 'picongpu.profile')
-        with open(profile, 'w') as pf:
-            pf.write('export PIC_PROFILE=$(cd $(dirname $BASH_SOURCE) ' +
-                     '&& pwd)"/"$(basename $BASH_SOURCE)\n\n')
-            pf.write('spack load {0}\n'.format(spec))
+        profile_in = join_path(os.path.dirname(__file__), 'picongpu.profile')
+        profile_out = join_path(path_etc, 'picongpu')
+        install(profile_in, prefix)
+        filter_file('@PIC_SPACK_COMPILER@', self.compiler,
+                    join_path(profile_out, 'picongpu.profile'))
+        filter_file('@PIC_SPACK_SPEC@', spec,
+                    join_path(profile_out, 'picongpu.profile'))
 
     def setup_environment(self, spack_env, run_env):
         run_env.set('PICSRC', self.prefix)
@@ -154,3 +158,6 @@ class Picongpu(Package):
         run_env.prepend_path('CPATH', ':'.join(include_path))
         run_env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
         run_env.prepend_path('PATH', ':'.join(bin_path))
+        # pre-load depending compiler
+        run_env.set('CC', self.compiler.cc)
+        run_env.set('CXX', self.compiler.cxx)
