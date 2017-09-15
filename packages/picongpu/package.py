@@ -114,10 +114,10 @@ class Picongpu(Package):
 
         profile_in = join_path(os.path.dirname(__file__), 'picongpu.profile')
         profile_out = join_path(path_etc, 'picongpu')
-        install(profile_in, prefix)
-        filter_file('@PIC_SPACK_COMPILER@', self.compiler,
+        install(profile_in, profile_out)
+        filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
                     join_path(profile_out, 'picongpu.profile'))
-        filter_file('@PIC_SPACK_SPEC@', spec,
+        filter_file('@PIC_SPACK_SPEC@', str(spec),
                     join_path(profile_out, 'picongpu.profile'))
 
     def setup_environment(self, spack_env, run_env):
