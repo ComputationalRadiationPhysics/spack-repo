@@ -159,5 +159,10 @@ class Picongpu(Package):
         run_env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
         run_env.prepend_path('PATH', ':'.join(bin_path))
         # pre-load depending compiler
+        cxx_bin = os.path.dirname(self.compiler.cxx)
+        cxx_prefix = join_path(cxx_bin, '..')
+        cxx_lib = join_path(cxx_prefix, 'lib')
+        run_env.prepend_path('LD_LIBRARY_PATH', cxx_lib)
+        run_env.prepend_path('PATH', cxx_bin)
         run_env.set('CC', self.compiler.cc)
         run_env.set('CXX', self.compiler.cxx)
