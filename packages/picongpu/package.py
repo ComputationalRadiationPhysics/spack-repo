@@ -111,6 +111,7 @@ class Picongpu(Package):
         install('pic-compile', prefix)
         install('pic-configure', prefix)
         install('pic-create', prefix)
+        install('pic-edit', prefix)
 
         profile_in = join_path(os.path.dirname(__file__), 'picongpu.profile')
         profile_out = join_path(path_etc, 'picongpu')
