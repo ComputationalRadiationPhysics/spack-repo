@@ -124,6 +124,8 @@ class Picongpu(Package):
 
     def setup_environment(self, spack_env, run_env):
         run_env.set('PICSRC', self.prefix)
+        run_env.set('PIC_EXAMPLES',
+                    join_path(self.prefix, 'share/picongpu/examples'))
         run_env.set('PIC_PROFILE',
                     join_path(self.prefix, 'etc', 'picongpu',
                               'picongpu.profile'))
