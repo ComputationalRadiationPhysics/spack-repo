@@ -67,7 +67,9 @@ class Picongpu(Package):
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0:')
     depends_on('boost@1.65.1:', when='backend=cuda ^cuda@9:')
-    depends_on('mpi@2.3:3.0')
+    # work-around for forwarding of CUDA variant on mpi
+    depends_on('mpi@2.3:3.0', when='backend=omp2b')
+    depends_on('openmpi +cuda', when='backend=cuda')
     depends_on('mpi+cuda', when='backend=cuda')
     depends_on('pngwriter@0.6.0', when='+png')
     depends_on('libsplash@1.6.0', when='+hdf5')
