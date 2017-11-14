@@ -35,6 +35,8 @@ class Picongpu(Package):
 
     version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
+    version('foilISAAC', branch='topic-20171114-foilISAAC',
+            git='https://github.com/ax3l/picongpu.git')
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     # version('0.4.0', '')
@@ -120,8 +122,11 @@ class Picongpu(Package):
         profile_in = join_path(os.path.dirname(__file__), 'picongpu.profile')
         profile_out = join_path(path_etc, 'picongpu')
         install(profile_in, profile_out)
-        filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
+        filter_file('@PIC_SPACK_ROOT@', str(self.rootdir),
                     join_path(profile_out, 'picongpu.profile'))
+        #filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
+        #            join_path(profile_out, 'picongpu.profile'))
+        # spack load on concretized spec does not work right now, replace with unconcrete spec
         filter_file('@PIC_SPACK_SPEC@', str(spec),
                     join_path(profile_out, 'picongpu.profile'))
 
