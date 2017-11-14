@@ -68,6 +68,7 @@ class Picongpu(Package):
     depends_on('boost@1.62.0:')
     depends_on('boost@1.65.1:', when='backend=cuda ^cuda@9:')
     depends_on('mpi@2.3:3.0')
+    depends_on('mpi+cuda', when='backend=cuda')
     depends_on('pngwriter@0.6.0', when='+png')
     depends_on('libsplash@1.6.0', when='+hdf5')
     depends_on('adios@1.10.0', when='+adios')
