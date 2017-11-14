@@ -121,6 +121,7 @@ class Picongpu(Package):
         profile_out = join_path(path_etc, 'picongpu')
         install(profile_in, profile_out)
         filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
+                    join_path(profile_out, 'picongpu.profile'))
         filter_file('@PIC_SPACK_ROOT@', str(os.environ['SPACK_ROOT']),
                     join_path(profile_out, 'picongpu.profile'))
         #filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
