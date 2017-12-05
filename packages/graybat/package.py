@@ -30,6 +30,7 @@ class Graybat(CMakePackage):
 
     homepage = "https://github.com/ComputationalRadiationPhysics/graybat"
     url      = "https://github.com/ComputationalRadiationPhysics/graybat/archive/1.2.0.tar.gz"
+    maintainers = ['ax3l']
 
     # version('develop', branch='remove_grpc',
     #         git='https://github.com/fabian-jung/graybat.git')

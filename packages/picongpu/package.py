@@ -32,11 +32,15 @@ class Picongpu(Package):
 
     homepage = "https://github.com/ComputationalRadiationPhysics/picongpu"
     url      = "https://github.com/ComputationalRadiationPhysics/picongpu/archive/0.4.0.tar.gz"
+    maintainers = ['ax3l']
 
     version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     version('foilISAAC', branch='topic-20171114-foilISAAC',
             git='https://github.com/ax3l/picongpu.git')
+    home = os.path.expanduser('~')
+    version('local',
+            git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     # version('0.4.0', '')
@@ -127,6 +131,7 @@ class Picongpu(Package):
         #filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
         #            join_path(profile_out, 'picongpu.profile'))
         # spack load on concretized spec does not work right now, replace with unconcrete spec
+        # set an adios staging method to work-around: https://github.com/spack/spack/issues/6314
         filter_file('@PIC_SPACK_SPEC@', str(spec),
                     join_path(profile_out, 'picongpu.profile'))
 

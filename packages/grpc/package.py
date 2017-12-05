@@ -30,6 +30,7 @@ class Grpc(CMakePackage):
 
     homepage = "https://grpc.io"
     url      = "https://github.com/grpc/grpc/archive/v1.6.0.tar.gz"
+    maintainers = ['ax3l']
 
     version('develop', branch='master',
             git='https://github.com/grpc/grpc.git')

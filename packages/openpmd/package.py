@@ -30,6 +30,7 @@ class Openpmd(CMakePackage):
 
     homepage = "http://www.openPMD.org"
     url      = "https://github.com/google/benchmark/archive/1.0.0.tar.gz"
+    maintainers = ['ax3l']
 
     version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/libopenPMD.git')

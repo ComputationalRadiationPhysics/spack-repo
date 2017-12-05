@@ -30,6 +30,7 @@ class Alpaka(Package):
 
     homepage = "https://github.com/ComputationalRadiationPhysics/alpaka"
     url      = "https://github.com/ComputationalRadiationPhysics/alpaka/archive/0.2.0.tar.gz"
+    maintainers = ['ax3l']
 
     version('develop', branch='develop',
             git='https://github.com/ComputationalRadiationPhysics/alpaka.git')

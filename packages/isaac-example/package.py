@@ -30,6 +30,7 @@ class IsaacExample(CMakePackage):
 
     homepage = "http://computationalradiationphysics.github.io/isaac/"
     url      = "https://github.com/ComputationalRadiationPhysics/isaac/archive/v1.3.1.tar.gz"
+    maintainers = ['ax3l']
 
     version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/isaac.git')
