@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -29,7 +29,7 @@ class Openpmd(CMakePackage):
     """API for easy reading and writing of openPMD files"""
 
     homepage = "http://www.openPMD.org"
-    url      = "https://github.com/google/benchmark/archive/1.0.0.tar.gz"
+    url      = "https://github.com/ComputationalRadiationPhysics/archive/1.0.0.tar.gz"
     maintainers = ['ax3l']
 
     version('develop', branch='dev',
@@ -37,11 +37,42 @@ class Openpmd(CMakePackage):
 
     variant('mpi', default=True,
             description='Enable parallel I/O')
+    variant('hdf5', default=True,
+            description='Enable HDF5 support')
+    variant('adios1', default=True,
+            description='Enable ADIOS1 support')
+    #variant('adios2', default=True,
+    #        description='Enable ADIOS2 support')
+    #variant('json', default=True,
+    #        description='Enable JSON support')
+    #variant('python', default=True,
+    #        description='Enable Python binings')
 
-    depends_on('cmake@3.5.1:', type='build')
+    depends_on('cmake@3.10.0:', type='build')
+    depends_on('boost@1.62.0:')
     depends_on('mpi', when='+mpi')
-    depends_on('hdf5')
-    depends_on('hdf5+mpi', when='+mpi')
-    depends_on('adios2')
-    depends_on('adios2+mpi', when='+mpi')
+    depends_on('hdf5@1.8.6:', when='+hdf5')
+    depends_on('hdf5@1.8.6: +mpi', when='+mpi +hdf5')
+    depends_on('adios@1.10.0:', when='+adios1')
+    depends_on('adios@1.10.0: +mpi', when='+mpi +adios1')
+    depends_on('adios2', when='+adios2')
+    depends_on('adios2 +mpi', when='+mpi +adios2')
 
+    def cmake_args(self):
+        spec = self.spec
+
+        args = [
+            '-DopenPMD_USE_MPI:BOOL={0}'.format(
+                'ON' if '+mpi' in spec else 'OFF'),
+            '-DopenPMD_USE_HDF5:BOOL={0}'.format(
+                'ON' if '+hdf5' in spec else 'OFF'),
+            '-DopenPMD_USE_ADIOS1:BOOL={0}'.format(
+                'ON' if '+adios1' in spec else 'OFF'),
+            '-DopenPMD_USE_ADIOS2:BOOL={0}'.format(
+                'ON' if '+adios2' in spec else 'OFF'),
+            '-DopenPMD_USE_JSON:BOOL={0}'.format(
+                'ON' if '+json' in spec else 'OFF'),
+            '-DopenPMD_USE_PYTHON:BOOL={0}'.format(
+                'ON' if '+python' in spec else 'OFF')
+        ]
+        return args
