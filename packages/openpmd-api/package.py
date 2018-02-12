@@ -25,15 +25,15 @@
 from spack import *
 
 
-class Openpmd(CMakePackage):
+class OpenpmdApi(CMakePackage):
     """API for easy reading and writing of openPMD files"""
 
     homepage = "http://www.openPMD.org"
-    url      = "https://github.com/ComputationalRadiationPhysics/archive/1.0.0.tar.gz"
+    url      = "https://github.com/openPMD/openPMD-api/archive/1.0.0.tar.gz"
     maintainers = ['ax3l']
 
     version('develop', branch='dev',
-            git='https://github.com/ComputationalRadiationPhysics/libopenPMD.git')
+            git='https://github.com/openPMD/openPMD-api.git')
 
     variant('mpi', default=True,
             description='Enable parallel I/O')
@@ -57,7 +57,7 @@ class Openpmd(CMakePackage):
     depends_on('adios@1.10.0: +mpi', when='+mpi +adios1')
     depends_on('adios2', when='+adios2')
     depends_on('adios2 +mpi', when='+mpi +adios2')
-    depends_on('pybind11@2.2.1:', when='+python')  # ideally we want 2.3.0+ for full C++11 CT function signature support
+    depends_on('py-pybind11@2.2.1:', when='+python')  # ideally we want 2.3.0+ for full C++11 CT function signature support
 
     def cmake_args(self):
         spec = self.spec
