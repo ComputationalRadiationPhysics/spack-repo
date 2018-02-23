@@ -50,19 +50,23 @@ class OpenpmdApi(CMakePackage):
 
     depends_on('cmake@3.10.0:', type='build')
     depends_on('boost@1.62.0:')
+    depends_on('mpark-variant@1.3.0:')
     depends_on('mpi@2.3:', when='+mpi')  # might become MPI 3.0+
     depends_on('hdf5@1.8.6:', when='+hdf5')
     depends_on('hdf5@1.8.6: +mpi', when='+mpi +hdf5')
     depends_on('adios@1.10.0:', when='+adios1')
     depends_on('adios@1.10.0: +mpi', when='+mpi +adios1')
-    depends_on('adios2', when='+adios2')
-    depends_on('adios2 +mpi', when='+mpi +adios2')
+    depends_on('adios2@2.1.0:', when='+adios2')
+    depends_on('adios2@2.1.0: +mpi', when='+mpi +adios2')
     depends_on('py-pybind11@2.2.1:', when='+python')  # ideally we want 2.3.0+ for full C++11 CT function signature support
+
+    extends('python', when='+python')
 
     def cmake_args(self):
         spec = self.spec
 
         args = [
+            # variants
             '-DopenPMD_USE_MPI:BOOL={0}'.format(
                 'ON' if '+mpi' in spec else 'OFF'),
             '-DopenPMD_USE_HDF5:BOOL={0}'.format(
@@ -74,6 +78,12 @@ class OpenpmdApi(CMakePackage):
             # '-DopenPMD_USE_JSON:BOOL={0}'.format(
             #     'ON' if '+json' in spec else 'OFF'),
             '-DopenPMD_USE_PYTHON:BOOL={0}'.format(
-                'ON' if '+python' in spec else 'OFF')
+                'ON' if '+python' in spec else 'OFF'),
+
+            # disable internally shipped third-party libraries
+            '-DopenPMD_USE_INTERNAL_VARIANT:BOOL=OFF'
         ]
+        if spec.satisfies('+python'):
+            args.append('-DPYTHON_EXECUTABLE:FILEPATH={0}'.format(
+                        self.spec['python'].command.path))
         return args
