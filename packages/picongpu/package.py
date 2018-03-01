@@ -77,7 +77,7 @@ class Picongpu(Package):
     # note: NOT cuda aware!
     depends_on('mpi@2.3:3.0')
     depends_on('pngwriter@0.7.0', when='+png')
-    depends_on('libsplash@1.7.0', when='+hdf5')
+    depends_on('libsplash@1.7.0', when='+hdf5', patch='libSplash_170_docker.patch')
     depends_on('adios@1.10.0', when='+adios')
     depends_on('isaac@1.3.3:', when='+isaac')
     depends_on('isaac-server@1.3.3:', type='run', when='+isaac')
@@ -116,11 +116,6 @@ class Picongpu(Package):
         install_tree('src', join_path(prefix, 'src'))
         install_tree('share', path_share)
         install_tree('thirdParty', join_path(prefix, 'thirdParty'))
-        install('pic-build', prefix)
-        install('pic-compile', prefix)
-        install('pic-configure', prefix)
-        install('pic-create', prefix)
-        install('pic-edit', prefix)
 
         profile_in = join_path(os.path.dirname(__file__), 'picongpu.profile')
         profile_out = join_path(path_etc, 'picongpu')
@@ -148,7 +143,6 @@ class Picongpu(Package):
         elif 'backend=omp2b' in self.spec:
             run_env.set('PIC_BACKEND', 'omp2b')
 
-        run_env.prepend_path('PATH', self.prefix)
         run_env.prepend_path('PATH',
                              join_path(self.prefix, 'bin'))
         run_env.prepend_path('PATH',
