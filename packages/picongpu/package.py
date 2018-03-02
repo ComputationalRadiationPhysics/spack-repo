@@ -72,7 +72,7 @@ class Picongpu(Package):
     depends_on('rsync', type='run')
     depends_on('cuda@8.0:9', when='backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:')
+    depends_on('boost@1.62.0:1.65.1')
     depends_on('boost@1.65.1', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
     depends_on('mpi@2.3:3.0')
