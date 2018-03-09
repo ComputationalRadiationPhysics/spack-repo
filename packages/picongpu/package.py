@@ -78,7 +78,7 @@ class Picongpu(Package):
     # note: NOT cuda aware!
     depends_on('mpi@2.3:3.0')
     depends_on('pngwriter@0.7.0', when='+png')
-    depends_on('libsplash@1.7.0', when='+hdf5', patches='libSplash_170_docker.patch')
+    depends_on('libsplash@1.7.0', when='+hdf5')
     depends_on('adios@1.10.0', when='+adios')
     depends_on('isaac@1.3.3:', when='+isaac')
     depends_on('isaac-server@1.3.3:', type='run', when='+isaac')
