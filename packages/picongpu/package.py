@@ -38,6 +38,8 @@ class Picongpu(Package):
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     version('foilISAAC', branch='topic-20171114-foilISAAC',
             git='https://github.com/ax3l/picongpu.git')
+    version('gtc18', branch='topic-NGCandGTC18',
+            git='https://github.com/ax3l/picongpu.git')
     home = os.path.expanduser('~')
     version('local',
             git='file://{0}/src/picongpu'.format(home))
