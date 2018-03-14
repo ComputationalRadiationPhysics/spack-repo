@@ -79,7 +79,8 @@ class OpenpmdApi(CMakePackage):
             #     'ON' if '+json' in spec else 'OFF'),
             '-DopenPMD_USE_PYTHON:BOOL={0}'.format(
                 'ON' if '+python' in spec else 'OFF'),
-
+            # TODO: skip building tests? add variant?
+            # '-DopenPMD_USE_PYTHON:BOOL=OFF',
             # disable internally shipped third-party libraries
             '-DopenPMD_USE_INTERNAL_VARIANT:BOOL=OFF'
         ]
