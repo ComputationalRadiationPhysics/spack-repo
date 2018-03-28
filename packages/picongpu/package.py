@@ -35,6 +35,7 @@ class Picongpu(Package):
     maintainers = ['ax3l']
 
     version('develop', branch='dev',
+            preferred=True,
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
     version('foilISAAC', branch='topic-20171114-foilISAAC',
             git='https://github.com/ax3l/picongpu.git')
