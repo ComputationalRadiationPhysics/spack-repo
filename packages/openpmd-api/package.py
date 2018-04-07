@@ -39,18 +39,21 @@ class OpenpmdApi(CMakePackage):
             description='Enable parallel I/O')
     variant('hdf5', default=True,
             description='Enable HDF5 support')
-    variant('adios1', default=True,
-            description='Enable ADIOS1 support')
+    # variant('adios1', default=True,
+    #         description='Enable ADIOS1 support')
     # variant('adios2', default=True,
     #         description='Enable ADIOS2 support')
     # variant('json', default=True,
     #         description='Enable JSON support')
     variant('python', default=True,
             description='Enable Python bindings')
+    variant('test', default=True,
+            description='Build the tests')
 
     depends_on('cmake@3.10.0:', type='build')
     depends_on('boost@1.62.0:')
     depends_on('mpark-variant@1.3.0:')
+    depends_on('catch@2.2.1: ~single_header', when='+test', type='build')
     depends_on('mpi@2.3:', when='+mpi')  # might become MPI 3.0+
     depends_on('hdf5@1.8.6:', when='+hdf5')
     depends_on('hdf5@1.8.6: +mpi', when='+mpi +hdf5')
@@ -73,18 +76,21 @@ class OpenpmdApi(CMakePackage):
                 'ON' if '+hdf5' in spec else 'OFF'),
             '-DopenPMD_USE_ADIOS1:BOOL={0}'.format(
                 'ON' if '+adios1' in spec else 'OFF'),
-            # '-DopenPMD_USE_ADIOS2:BOOL={0}'.format(
-            #     'ON' if '+adios2' in spec else 'OFF'),
+            '-DopenPMD_USE_ADIOS2:BOOL={0}'.format(
+                'ON' if '+adios2' in spec else 'OFF'),
             # '-DopenPMD_USE_JSON:BOOL={0}'.format(
             #     'ON' if '+json' in spec else 'OFF'),
             '-DopenPMD_USE_PYTHON:BOOL={0}'.format(
                 'ON' if '+python' in spec else 'OFF'),
-            # TODO: skip building tests? add variant?
-            # '-DopenPMD_USE_PYTHON:BOOL=OFF',
+            '-DBUILD_TESTING:BOOL={0}'.format(
+                'ON' if '+test' in spec else 'OFF'),
             # disable internally shipped third-party libraries
             '-DopenPMD_USE_INTERNAL_VARIANT:BOOL=OFF'
         ]
         if spec.satisfies('+python'):
             args.append('-DPYTHON_EXECUTABLE:FILEPATH={0}'.format(
                         self.spec['python'].command.path))
+        if spec.satisfies('+test'):
+            args.append('-DopenPMD_USE_INTERNAL_CATCH:BOOL=OFF')
+
         return args
