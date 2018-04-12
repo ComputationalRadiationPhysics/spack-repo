@@ -39,10 +39,10 @@ class OpenpmdApi(CMakePackage):
             description='Enable parallel I/O')
     variant('hdf5', default=True,
             description='Enable HDF5 support')
-    # variant('adios1', default=True,
-    #         description='Enable ADIOS1 support')
-    # variant('adios2', default=True,
-    #         description='Enable ADIOS2 support')
+    variant('adios1', default=False,
+            description='Enable ADIOS1 support')
+    variant('adios2', default=False,
+            description='Enable ADIOS2 support')
     # variant('json', default=True,
     #         description='Enable JSON support')
     variant('python', default=True,
@@ -83,13 +83,15 @@ class OpenpmdApi(CMakePackage):
             '-DopenPMD_USE_PYTHON:BOOL={0}'.format(
                 'ON' if '+python' in spec else 'OFF'),
             '-DBUILD_TESTING:BOOL={0}'.format(
-                'ON' if '+test' in spec else 'OFF'),
-            # disable internally shipped third-party libraries
-            '-DopenPMD_USE_INTERNAL_VARIANT:BOOL=OFF'
+                'ON' if '+test' in spec else 'OFF')
         ]
+
         if spec.satisfies('+python'):
             args.append('-DPYTHON_EXECUTABLE:FILEPATH={0}'.format(
                         self.spec['python'].command.path))
+
+        # switch internally shipped third-party libraries for spack
+        args.append('-DopenPMD_USE_INTERNAL_VARIANT:BOOL=OFF')
         if spec.satisfies('+test'):
             args.append('-DopenPMD_USE_INTERNAL_CATCH:BOOL=OFF')
 
