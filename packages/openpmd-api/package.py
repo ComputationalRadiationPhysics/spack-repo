@@ -61,7 +61,8 @@ class OpenpmdApi(CMakePackage):
     depends_on('adios@1.10.0: +mpi', when='+mpi +adios1')
     depends_on('adios2@2.1.0:', when='+adios2')
     depends_on('adios2@2.1.0: +mpi', when='+mpi +adios2')
-    depends_on('py-pybind11@2.2.1:', when='+python')  # ideally we want 2.3.0+ for full C++11 CT function signature support
+    # ideally we want 2.3.0+ for full C++11 CT function signature support
+    depends_on('py-pybind11@2.2.1:', when='+python')
 
     extends('python', when='+python')
 
