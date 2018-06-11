@@ -96,9 +96,10 @@ class Picongpu(Package):
 
     # NVCC host-compiler incompatibility list
     #   https://gist.github.com/ax3l/9489132
+    # note: gcc std::tuple issues in nvcc < 9.2!
     conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:7.5')
-    conflicts('%gcc@6:', when='backend=cuda cudacxx=nvcc ^cuda@:8')
-    conflicts('%gcc@7:', when='backend=cuda cudacxx=nvcc ^cuda@:9')
+    conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:8')
+    conflicts('%gcc@6:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
     conflicts('%clang@:3.4,3.7:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
     conflicts('%clang@:3.7,4:', when='backend=cuda cudacxx=nvcc ^cuda@8:9')
     conflicts('%intel@:14,16:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
