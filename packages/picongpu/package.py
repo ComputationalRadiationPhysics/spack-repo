@@ -83,8 +83,8 @@ class Picongpu(Package):
     depends_on('pngwriter@0.7.0', when='+png')
     depends_on('libsplash@1.7.0', when='+hdf5')
     depends_on('adios@1.13.1:', when='+adios')
-    depends_on('isaac@1.3.3:', when='+isaac')
-    depends_on('isaac-server@1.3.3:', type='run', when='+isaac')
+    depends_on('isaac@1.4.0', when='+isaac')
+    depends_on('isaac-server@1.4.0', type='run', when='+isaac')
 
     # shipped internal dependencies
     # @TODO get from extern!
