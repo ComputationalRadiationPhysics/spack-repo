@@ -74,7 +74,7 @@ class Picongpu(Package):
     depends_on('cmake@3.10.0:', type=['build', 'run'])
     depends_on('rsync', type='run')
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
-    depends_on('cuda@8.0:9', when='backend=cuda')
+    depends_on('cuda@8.0:9.1', when='backend=cuda')
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0:1.65.1')
     depends_on('boost@1.65.1', when='backend=cuda ^cuda@9:')
