@@ -34,10 +34,10 @@ class Alpaka(Package):
 
     version('develop', branch='develop',
             git='https://github.com/ComputationalRadiationPhysics/alpaka.git')
-    version('master', branch='master',
-            git='https://github.com/ComputationalRadiationPhysics/alpaka.git')
-    version('0.2.0', 'bd778afe300731c935a415ec73fb18b8')
-    version('0.1.0', '744546f1984093db416d93b691945015')
+    # version('master', branch='master',
+    #         git='https://github.com/ComputationalRadiationPhysics/alpaka.git')
+    # version('0.2.0', 'bd778afe300731c935a415ec73fb18b8')
+    # version('0.1.0', '744546f1984093db416d93b691945015')
 
     # depends_on('cmake@3.7:', type='build')
 
