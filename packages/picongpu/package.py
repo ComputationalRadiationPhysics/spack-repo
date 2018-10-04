@@ -131,9 +131,14 @@ class Picongpu(Package):
                     join_path(profile_out, 'picongpu.profile'))
         #filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
         #            join_path(profile_out, 'picongpu.profile'))
-        # spack load on concretized spec does not work right now, replace with unconcrete spec
-        # set an adios staging method to work-around: https://github.com/spack/spack/issues/6314
-        filter_file('@PIC_SPACK_SPEC@', str(spec),
+        # spack load on concretized spec does not work right now, replace with
+        # slightly non-concrete spec set a None-defaulted multi-variant to
+        # work-around:
+        # https://github.com/spack/spack/issues/6314
+        spec_list = str(spec).split(' ')
+        spec_list = list(filter(lambda x: not x.endswith('='), spec_list))
+        sanitized_spec = ' '.join(spec_list)
+        filter_file('@PIC_SPACK_SPEC@', sanitized_spec,
                     join_path(profile_out, 'picongpu.profile'))
 
     def setup_environment(self, spack_env, run_env):
