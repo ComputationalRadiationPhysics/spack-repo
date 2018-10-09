@@ -94,21 +94,25 @@ class Picongpu(Package):
     # @TODO get from extern!
     # alpaka, cupla, cuda-memtest, mallocMC, mpiInfo, CRP's cmake-modules
 
-    # definitely unsupported compilers
+    # definitely unsupported compilers without sufficient C++11
     conflicts('%gcc@:4.8')
     conflicts('%clang@:3.8')
     conflicts('%clang@:7.3 platform=darwin')  # Xcode's AppleClang
 
     # NVCC host-compiler incompatibility list
     #   https://gist.github.com/ax3l/9489132
-    # note: gcc std::tuple issues in nvcc < 9.2!
     conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:7.5')
     conflicts('%gcc@5.4:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
+    conflicts('%gcc@8:', when='backend=cuda cudacxx=nvcc ^cuda@9.2:10')
     conflicts('%clang@:3.4,3.7:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
-    conflicts('%clang@:3.7,4:', when='backend=cuda cudacxx=nvcc ^cuda@8:9')
+    conflicts('%clang@:3.7,4.0:', when='backend=cuda cudacxx=nvcc ^cuda@8:9.0')
+    conflicts('%clang@:3.7,4.1:', when='backend=cuda cudacxx=nvcc ^cuda@9.1')
+    conflicts('%clang@:3.7,5.1:', when='backend=cuda cudacxx=nvcc ^cuda@9.2')
+    conflicts('%clang@:3.7,6.1:', when='backend=cuda cudacxx=nvcc ^cuda@10')
     conflicts('%intel@:14,16:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
     conflicts('%intel@:14,17:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.44')
     conflicts('%intel@:14,18:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.61:9')
+    conflicts('%intel@:14,19:', when='backend=cuda cudacxx=nvcc ^cuda@10')
 
     def install(self, spec, prefix):
         path_bin = join_path(prefix, 'bin')
