@@ -114,6 +114,13 @@ class Picongpu(Package):
     conflicts('%intel@:14,18:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.61:9')
     conflicts('%intel@:14,19:', when='backend=cuda cudacxx=nvcc ^cuda@10')
 
+    # Clang compatibility with CUDA SDK
+    conflicts('^cuda@:6.5', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:3.8', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@3.9:5.0 ^cuda@9:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@7.0 ^cuda@10:', when='backend=cuda cudacxx=clang')
+
     def install(self, spec, prefix):
         path_bin = join_path(prefix, 'bin')
         path_etc = join_path(prefix, 'etc')
