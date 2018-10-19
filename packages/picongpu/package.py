@@ -102,7 +102,8 @@ class Picongpu(Package):
     # NVCC host-compiler incompatibility list
     #   https://gist.github.com/ax3l/9489132
     conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:7.5')
-    conflicts('%gcc@5.4:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
+    conflicts('%gcc@5.4:', when='backend=cuda cudacxx=nvcc ^cuda@:8')
+    conflicts('%gcc@5.6:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
     conflicts('%gcc@8:', when='backend=cuda cudacxx=nvcc ^cuda@9.2:10')
     conflicts('%clang@:3.4,3.7:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
     conflicts('%clang@:3.7,4.0:', when='backend=cuda cudacxx=nvcc ^cuda@8:9.0')
