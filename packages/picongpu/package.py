@@ -45,9 +45,10 @@ class Picongpu(Package):
             git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
-    # version('0.4.0', '')
-    version('0.4.0-rc4',
+    version('0.4.0',
             preferred=True,
+            sha256='ec29348dc2bc728725111ba927cbe9975ac917188c3d0882bf8c6dd8f0a3b83f')
+    version('0.4.0-rc4',
             sha256='193ef717c634442053ac0b31aea6e7dfa3280eac5eb76e4ad840d17a29880eda')
     version('0.4.0-rc3',
             sha256='c50b4f7a0c3f83c0ffc00cec1c188513cf9a5306658ace02995460671e40b420')
