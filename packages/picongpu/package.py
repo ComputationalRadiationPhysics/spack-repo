@@ -89,11 +89,11 @@ class Picongpu(Package):
     depends_on('boost@1.65.1 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
     depends_on('mpi@2.3:3.0', type=['link', 'run'])
-    depends_on('pngwriter@0.7.0', when='+png')
-    depends_on('libsplash@1.7.0', when='+hdf5')
-    depends_on('adios@1.13.1:', when='+adios')
-    depends_on('isaac@1.4.0', when='+isaac')
-    depends_on('isaac-server@1.4.0', type='run', when='+isaac')
+    depends_on('pngwriter@0.7.0,develop', when='+png')
+    depends_on('libsplash@1.7.0,develop', when='+hdf5')
+    depends_on('adios@1.13.1:,develop', when='+adios')
+    depends_on('isaac@1.4.0,develop', when='+isaac')
+    depends_on('isaac-server@1.4.0,develop', type='run', when='+isaac')
 
     # shipped internal dependencies
     # @TODO get from extern!
