@@ -90,7 +90,8 @@ class Picongpu(Package):
     depends_on('boost@1.62.0:1.65.1 cxxstd=11')
     depends_on('boost@1.65.1 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
-    depends_on('mpi@2.3:3.0', type=['link', 'run'])
+    # depends_on('mpi@2.3:', type=['link', 'run'])
+    depends_on('openmpi@1.8:3.99', type=['link', 'run'])
     depends_on('pngwriter@0.7.0,develop', when='+png')
     depends_on('libsplash@1.7.0,develop', when='+hdf5')
     depends_on('adios@1.13.1:,develop', when='+adios')
