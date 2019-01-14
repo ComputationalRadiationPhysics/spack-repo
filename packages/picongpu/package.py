@@ -45,8 +45,19 @@ class Picongpu(Package):
             git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
-    # version('0.4.0', '')
-    version('0.4.0-rc2', '977f29b93608d5f1b6521ffffc6e9661', preferred=True)
+    version('0.4.2',
+            preferred=True,
+            sha256='f02563f7e9af0e260a0e6a8b13651b982dc28ce4e44efacf1af3e4a39ded6958')
+    version('0.4.1',
+            sha256='e69c53282fa297f9aa9edf7671ef82b1c392a8163e6d990e9cc468c7fd85481a')
+    version('0.4.0',
+            sha256='ec29348dc2bc728725111ba927cbe9975ac917188c3d0882bf8c6dd8f0a3b83f')
+    version('0.4.0-rc4',
+            sha256='193ef717c634442053ac0b31aea6e7dfa3280eac5eb76e4ad840d17a29880eda')
+    version('0.4.0-rc3',
+            sha256='c50b4f7a0c3f83c0ffc00cec1c188513cf9a5306658ace02995460671e40b420')
+    version('0.4.0-rc2',
+            sha256='0b65fc17529f87f5a996c1ea3c13f9482e4c2e6d6a2abe5a5be7766a10cbfe6a')
 
     # Alpaka computing backends.
     # Accepted values are:
@@ -76,35 +87,48 @@ class Picongpu(Package):
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
     depends_on('cuda@8.0:9.2', when='backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:1.65.1')
-    depends_on('boost@1.65.1', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.62.0:1.65.1 cxxstd=11')
+    depends_on('boost@1.65.1 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
-    depends_on('mpi@2.3:3.0', type=['link', 'run'])
-    depends_on('pngwriter@0.7.0', when='+png')
-    depends_on('libsplash@1.7.0', when='+hdf5')
-    depends_on('adios@1.13.1:', when='+adios')
-    depends_on('isaac@1.4.0', when='+isaac')
-    depends_on('isaac-server@1.4.0', type='run', when='+isaac')
+    # depends_on('mpi@2.3:', type=['link', 'run'])
+    depends_on('openmpi@1.8:3.99', type=['link', 'run'])
+    depends_on('pngwriter@0.7.0,develop', when='+png')
+    depends_on('libsplash@1.7.0,develop', when='+hdf5')
+    depends_on('adios@1.13.1:,develop', when='+adios')
+    depends_on('isaac@1.4.0,develop', when='+isaac')
+    depends_on('isaac-server@1.4.0,develop', type='run', when='+isaac')
 
     # shipped internal dependencies
     # @TODO get from extern!
     # alpaka, cupla, cuda-memtest, mallocMC, mpiInfo, CRP's cmake-modules
 
-    # definitely unsupported compilers
+    # definitely unsupported compilers without sufficient C++11
     conflicts('%gcc@:4.8')
     conflicts('%clang@:3.8')
     conflicts('%clang@:7.3 platform=darwin')  # Xcode's AppleClang
 
     # NVCC host-compiler incompatibility list
     #   https://gist.github.com/ax3l/9489132
-    # note: gcc std::tuple issues in nvcc < 9.2!
     conflicts('%gcc@5:', when='backend=cuda cudacxx=nvcc ^cuda@:7.5')
-    conflicts('%gcc@5.4:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
+    conflicts('%gcc@5.4:', when='backend=cuda cudacxx=nvcc ^cuda@:8')
+    conflicts('%gcc@5.6:', when='backend=cuda cudacxx=nvcc ^cuda@:9.1')
+    conflicts('%gcc@8:', when='backend=cuda cudacxx=nvcc ^cuda@9.2:10')
     conflicts('%clang@:3.4,3.7:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
-    conflicts('%clang@:3.7,4:', when='backend=cuda cudacxx=nvcc ^cuda@8:9')
+    conflicts('%clang@:3.7,4.0:', when='backend=cuda cudacxx=nvcc ^cuda@8:9.0')
+    conflicts('%clang@:3.7,4.1:', when='backend=cuda cudacxx=nvcc ^cuda@9.1')
+    conflicts('%clang@:3.7,5.1:', when='backend=cuda cudacxx=nvcc ^cuda@9.2')
+    conflicts('%clang@:3.7,6.1:', when='backend=cuda cudacxx=nvcc ^cuda@10')
     conflicts('%intel@:14,16:', when='backend=cuda cudacxx=nvcc ^cuda@7.5')
     conflicts('%intel@:14,17:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.44')
     conflicts('%intel@:14,18:', when='backend=cuda cudacxx=nvcc ^cuda@8.0.61:9')
+    conflicts('%intel@:14,19:', when='backend=cuda cudacxx=nvcc ^cuda@10')
+
+    # Clang compatibility with CUDA SDK
+    conflicts('^cuda@:6.5', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:3.8', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@3.9:5.0 ^cuda@9:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@7.0 ^cuda@10:', when='backend=cuda cudacxx=clang')
 
     def install(self, spec, prefix):
         path_bin = join_path(prefix, 'bin')
@@ -131,9 +155,14 @@ class Picongpu(Package):
                     join_path(profile_out, 'picongpu.profile'))
         #filter_file('@PIC_SPACK_COMPILER@', str(self.compiler.spec),
         #            join_path(profile_out, 'picongpu.profile'))
-        # spack load on concretized spec does not work right now, replace with unconcrete spec
-        # set an adios staging method to work-around: https://github.com/spack/spack/issues/6314
-        filter_file('@PIC_SPACK_SPEC@', str(spec),
+        # spack load on concretized spec does not work right now, replace with
+        # slightly non-concrete spec set a None-defaulted multi-variant to
+        # work-around:
+        # https://github.com/spack/spack/issues/6314
+        spec_list = str(spec).split(' ')
+        spec_list = list(filter(lambda x: not x.endswith('='), spec_list))
+        sanitized_spec = ' '.join(spec_list)
+        filter_file('@PIC_SPACK_SPEC@', sanitized_spec,
                     join_path(profile_out, 'picongpu.profile'))
 
     def setup_environment(self, spack_env, run_env):
