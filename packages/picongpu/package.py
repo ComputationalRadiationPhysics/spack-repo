@@ -45,8 +45,10 @@ class Picongpu(Package):
             git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
-    version('0.4.2',
+    version('0.4.3',
             preferred=True,
+            sha256='4b4b2e682be08d54f499f01bea8e16b7ff1a4ebf7b7c7a924497948fc6ae57ef')
+    version('0.4.2',
             sha256='f02563f7e9af0e260a0e6a8b13651b982dc28ce4e44efacf1af3e4a39ded6958')
     version('0.4.1',
             sha256='e69c53282fa297f9aa9edf7671ef82b1c392a8163e6d990e9cc468c7fd85481a')
@@ -87,8 +89,8 @@ class Picongpu(Package):
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
     depends_on('cuda@8.0:9.2', when='backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:1.65.1 cxxstd=11')
-    depends_on('boost@1.65.1 cxxstd=11', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.62.0:1.68.0 cxxstd=11')
+    depends_on('boost@1.68.0 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
     # depends_on('mpi@2.3:', type=['link', 'run'])
     depends_on('openmpi@1.8:3.99', type=['link', 'run'])
