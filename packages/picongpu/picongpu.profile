@@ -2,5 +2,8 @@ export PIC_PROFILE=$(cd $(dirname $BASH_SOURCE) && pwd)"/"$(basename $BASH_SOURC
 
 . @PIC_SPACK_ROOT@/share/spack/setup-env.sh
 
-spack load @PIC_SPACK_COMPILER@
-spack load --dependencies @PIC_SPACK_SPEC@
+# optional: compiler, if not regular system compiler
+spack load @PIC_SPACK_COMPILER@ >/dev/null 2>&1 || echo "using default compiler"
+
+# required: PIConGPU and its dependencies
+spack load -r @PIC_SPACK_SPEC@
