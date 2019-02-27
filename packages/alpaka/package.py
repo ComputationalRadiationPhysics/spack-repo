@@ -51,7 +51,7 @@ class Alpaka(Package):
         install('CMakeLists.txt', prefix)
         install('Findalpaka.cmake', prefix)
         # awww
-        for troll in [".gitignore", ".travis.yml", ".zenodo.json", "COPYING", "COPYING.LESSER", "README.md"]:
+        for troll in [".gitignore", ".travis.yml", ".zenodo.json", "LICENSE", "README.md"]:
             install(troll, prefix)
 
     #def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
