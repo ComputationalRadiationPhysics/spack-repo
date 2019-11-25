@@ -69,10 +69,12 @@ class Picongpu(Package):
     depends_on('cmake@3.11.0:', type=['build', 'run'])
     depends_on('rsync', type='run')
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
-    depends_on('cuda@8.0:', when='backend=cuda')
+    depends_on('cuda', when='backend=cuda')
+    depends_on('cuda@8.0:10.0.130', when='@:0.4.3 backend=cuda')
+    depends_on('cuda@9.2:', when='@develop backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:1.66.0 cxxstd=11')
-    depends_on('boost@1.65.1:1.66.0 cxxstd=11', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.62.0:1.70.0 cxxstd=11')
+    depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
     # depends_on('mpi@2.3:', type=['link', 'run'])
     depends_on('openmpi@1.8:3.99', type=['link', 'run'])
@@ -111,8 +113,9 @@ class Picongpu(Package):
     conflicts('^cuda@:6.5', when='backend=cuda cudacxx=clang')
     conflicts('%clang@:3.8', when='backend=cuda cudacxx=clang')
     conflicts('%clang@3.9:5.0 ^cuda@9:', when='backend=cuda cudacxx=clang')
-    conflicts('%clang@6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
-    conflicts('%clang@7.0 ^cuda@10:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:7.0 ^cuda@10.0:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:8.0 ^cuda@10.1:', when='backend=cuda cudacxx=clang')
 
     def install(self, spec, prefix):
         path_bin = join_path(prefix, 'bin')
