@@ -48,5 +48,5 @@ class Graybat(CMakePackage):
     depends_on('protobuf@3.4.0:')  # , when='@:1.2.0')
     depends_on('grpc@1.6.0+shared', when='+grpc')
 
-    def setup_environment(self, spack_env, run_env):
-        run_env.prepend_path('CMAKE_PREFIX_PATH', join_path(self.prefix, 'include/graybat/utils/cmake/modules/'))
+    def setup_run_environment(self, env):
+        env.prepend_path('CMAKE_PREFIX_PATH', join_path(self.prefix, 'include/graybat/utils/cmake/modules/'))
