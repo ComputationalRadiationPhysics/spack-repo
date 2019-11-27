@@ -69,10 +69,12 @@ class Picongpu(Package):
     depends_on('cmake@3.11.0:', type=['build', 'run'])
     depends_on('rsync', type='run')
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
-    depends_on('cuda@8.0:9.2', when='backend=cuda')
+    depends_on('cuda', when='backend=cuda')
+    depends_on('cuda@8.0:10.0.130', when='@:0.4.3 backend=cuda')
+    depends_on('cuda@9.2:', when='@develop backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:1.66.0 cxxstd=11')
-    depends_on('boost@1.65.1:1.66.0 cxxstd=11', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.62.0:1.70.0 cxxstd=11')
+    depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='backend=cuda ^cuda@9:')
     # note: NOT cuda aware!
     # depends_on('mpi@2.3:', type=['link', 'run'])
     depends_on('openmpi@1.8:3.99', type=['link', 'run'])
@@ -111,8 +113,9 @@ class Picongpu(Package):
     conflicts('^cuda@:6.5', when='backend=cuda cudacxx=clang')
     conflicts('%clang@:3.8', when='backend=cuda cudacxx=clang')
     conflicts('%clang@3.9:5.0 ^cuda@9:', when='backend=cuda cudacxx=clang')
-    conflicts('%clang@6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
-    conflicts('%clang@7.0 ^cuda@10:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:6.0 ^cuda@9.1:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:7.0 ^cuda@10.0:', when='backend=cuda cudacxx=clang')
+    conflicts('%clang@:8.0 ^cuda@10.1:', when='backend=cuda cudacxx=clang')
 
     def install(self, spec, prefix):
         path_bin = join_path(prefix, 'bin')
@@ -149,24 +152,24 @@ class Picongpu(Package):
         filter_file('@PIC_SPACK_SPEC@', sanitized_spec,
                     join_path(profile_out, 'picongpu.profile'))
 
-    def setup_environment(self, spack_env, run_env):
-        run_env.set('PICSRC', self.prefix)
-        run_env.set('PIC_EXAMPLES',
-                    join_path(self.prefix, 'share/picongpu/examples'))
-        run_env.set('PIC_PROFILE',
-                    join_path(self.prefix, 'etc', 'picongpu',
-                              'picongpu.profile'))
+    def setup_run_environment(self, env):
+        env.set('PICSRC', self.prefix)
+        env.set('PIC_EXAMPLES',
+                join_path(self.prefix, 'share/picongpu/examples'))
+        env.set('PIC_PROFILE',
+                join_path(self.prefix, 'etc', 'picongpu',
+                          'picongpu.profile'))
         if 'backend=cuda' in self.spec:
-            run_env.set('PIC_BACKEND', 'cuda')
+            env.set('PIC_BACKEND', 'cuda')
         elif 'backend=omp2b' in self.spec:
-            run_env.set('PIC_BACKEND', 'omp2b')
+            env.set('PIC_BACKEND', 'omp2b')
 
-        run_env.prepend_path('PATH',
-                             join_path(self.prefix, 'bin'))
-        run_env.prepend_path('PATH',
-                             join_path(self.prefix, 'src/tools/bin'))
-        run_env.prepend_path('PYTHONPATH',
-                             join_path(self.prefix, 'lib/python'))
+        env.prepend_path('PATH',
+                         join_path(self.prefix, 'bin'))
+        env.prepend_path('PATH',
+                         join_path(self.prefix, 'src/tools/bin'))
+        env.prepend_path('PYTHONPATH',
+                         join_path(self.prefix, 'lib/python'))
         # optional: default for TBG_SUBMIT, TBG_TPLFILE
 
         # pre-load depends
@@ -184,15 +187,15 @@ class Picongpu(Package):
             bin_path.append(x.prefix.bin)
             include_path.append(x.prefix.include)
 
-        run_env.prepend_path('CMAKE_PREFIX_PATH', ':'.join(cmake_prefix_path))
-        run_env.prepend_path('CPATH', ':'.join(include_path))
-        run_env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
-        run_env.prepend_path('PATH', ':'.join(bin_path))
+        env.prepend_path('CMAKE_PREFIX_PATH', ':'.join(cmake_prefix_path))
+        env.prepend_path('CPATH', ':'.join(include_path))
+        env.prepend_path('LD_LIBRARY_PATH', ':'.join(ld_library_path))
+        env.prepend_path('PATH', ':'.join(bin_path))
         # pre-load depending compiler
         cxx_bin = os.path.dirname(self.compiler.cxx)
         cxx_prefix = join_path(cxx_bin, '..')
         cxx_lib = join_path(cxx_prefix, 'lib')
-        run_env.prepend_path('LD_LIBRARY_PATH', cxx_lib)
-        run_env.prepend_path('PATH', cxx_bin)
-        run_env.set('CC', self.compiler.cc)
-        run_env.set('CXX', self.compiler.cxx)
+        env.prepend_path('LD_LIBRARY_PATH', cxx_lib)
+        env.prepend_path('PATH', cxx_bin)
+        env.set('CC', self.compiler.cc)
+        env.set('CXX', self.compiler.cxx)
