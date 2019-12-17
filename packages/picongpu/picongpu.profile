@@ -13,5 +13,5 @@ BASH_COMP_FILE=$PICSRC/bin/picongpu-completion.bash
 if [ -f $BASH_COMP_FILE ] ; then
     source $BASH_COMP_FILE
 else
-    echo "bash completion file '$PICSRC/bin/picongpu-completion.bash' not found." >&2
+    echo "bash completion file '$BASH_COMP_FILE' not found." >&2
 fi
