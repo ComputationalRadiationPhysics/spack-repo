@@ -11,7 +11,7 @@ spack load -r @PIC_SPACK_SPEC@
 # activate bash completion if available
 BASH_COMP_FILE=$PICSRC/bin/picongpu-completion.bash
 if [ -f $BASH_COMP_FILE ] ; then
-    source $PICSRC/bin/picongpu-completion.bash
+    source $BASH_COMP_FILE
 else
     echo "bash completion file '$PICSRC/bin/picongpu-completion.bash' not found." >&2
 fi
