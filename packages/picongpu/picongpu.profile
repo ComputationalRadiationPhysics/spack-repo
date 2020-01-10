@@ -9,9 +9,7 @@ spack load @PIC_SPACK_COMPILER@ >/dev/null 2>&1 || echo "using default compiler"
 spack load -r @PIC_SPACK_SPEC@
 
 # activate bash completion if available
-BASH_COMP_FILE=$PICSRC/bin/picongpu-completion.bash
-if [ -f $BASH_COMP_FILE ] ; then
-    source $BASH_COMP_FILE
-else
-    echo "bash completion file '$BASH_COMP_FILE' not found." >&2
+PIC_COMP_FILE=$PICSRC/bin/picongpu-completion.bash
+if [ -f $PIC_COMP_FILE ] ; then
+    source PIC_COMP_FILE
 fi
