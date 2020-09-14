@@ -27,8 +27,10 @@ class Picongpu(Package):
             git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
-    version('0.4.3',
+    version('0.5.0',
             preferred=True,
+            sha256='2f8225329e79fd5253b1a96565c0449928daae4e0f3b8aea0c1704db33444ce9')
+    version('0.4.3',
             sha256='4b4b2e682be08d54f499f01bea8e16b7ff1a4ebf7b7c7a924497948fc6ae57ef')
     version('0.4.2',
             sha256='f02563f7e9af0e260a0e6a8b13651b982dc28ce4e44efacf1af3e4a39ded6958')
@@ -81,8 +83,10 @@ class Picongpu(Package):
     depends_on('pngwriter@0.7.0,develop', when='+png')
     depends_on('libsplash@1.7.0,develop', when='+hdf5')
     depends_on('adios@1.13.1:,develop', when='+adios')
-    depends_on('isaac@1.4.0,develop', when='+isaac')
-    depends_on('isaac-server@1.4.0,develop', type='run', when='+isaac')
+    depends_on('isaac@1.4.0', when='@:0.4.3 +isaac')
+    depends_on('isaac-server@1.4.0', type='run', when='@:0.4.3 +isaac')
+    depends_on('isaac@1.5.0,develop', when='@0.5.0: +isaac')
+    depends_on('isaac-server@1.5.0,develop', type='run', when='@0.5.0: +isaac')
 
     # shipped internal dependencies
     # @TODO get from extern!
