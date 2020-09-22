@@ -73,6 +73,7 @@ class Picongpu(Package):
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
     depends_on('cuda', when='backend=cuda')
     depends_on('cuda@8.0:10.0.130', when='@:0.4.3 backend=cuda')
+    depends_on('cuda@9.2:10.2.89', when='@0.5.0 backend=cuda')
     depends_on('cuda@9.2:', when='@develop backend=cuda')
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0:1.70.0 cxxstd=11')
