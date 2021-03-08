@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 #
-# Authors: Axel Huebl
+# Authors: Axel Huebl, Rene Widera
 from spack import *
 
 import os
@@ -14,7 +14,7 @@ class Picongpu(Package):
 
     homepage = "https://github.com/ComputationalRadiationPhysics/picongpu"
     url      = "https://github.com/ComputationalRadiationPhysics/picongpu/archive/0.4.0.tar.gz"
-    maintainers = ['ax3l']
+    maintainers = ['ax3l', 'psychocoderHPC']
 
     version('develop', branch='dev',
             git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
@@ -65,10 +65,13 @@ class Picongpu(Package):
             description='Enable the ADIOS plugin')
     variant('isaac', default=False,
             description='Enable the ISAAC plugin')
+    variant('openpmd',
+            default=True, description='Enable openPMD I/O')
 
     # @TODO add type=('link, 'run') to all these?
     # @TODO define supported ranges instead of fixed versions
     depends_on('cmake@3.11.4:', type=['build', 'run'])
+    depends_on('cmake@3.15.0:', type=['build', 'run'], when='@develop')
     depends_on('rsync', type='run')
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
     depends_on('cuda', when='backend=cuda')
@@ -84,8 +87,9 @@ class Picongpu(Package):
     depends_on('adios@1.13.1:,develop', when='+adios')
     depends_on('isaac@1.4.0', when='@:0.4.3 +isaac')
     depends_on('isaac-server@1.4.0', type='run', when='@:0.4.3 +isaac')
-    depends_on('isaac@1.5.0,develop', when='@0.5.0: +isaac')
-    depends_on('isaac-server@1.5.0,develop', type='run', when='@0.5.0: +isaac')
+    depends_on('isaac@1.5.2,develop', when='@0.5.0: +isaac')
+    depends_on('isaac-server@1.5.2,develop', type='run', when='@0.5.0: +isaac')
+    depends_on('openpmd-api@0.13.2:,dev', when='@develop +openpmd')
 
     # shipped internal dependencies
     # @TODO get from extern!
