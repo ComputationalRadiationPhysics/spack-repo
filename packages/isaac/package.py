@@ -31,14 +31,16 @@ class Isaac(CMakePackage):
     # variant('alpaka', default=False,
     #         description='Generate kernels via Alpaka, for CPUs or GPUs')
 
-    depends_on('cmake@3.3:', type='build')
+    depends_on('cmake@3.3:', type='build', when='@:1.5.2')
+    depends_on('cmake@3.15:', type='build')
     depends_on('jpeg', type='link')
     depends_on('jansson', type='link')
     depends_on('boost@1.56.0:', type='link')
     depends_on('boost@1.65.1:', type='link', when='^cuda@9:')
-    depends_on('cuda@7.0:', type='link', when='+cuda')
+    depends_on('cuda@7.0:', type='link', when='@:1.5.2 +cuda')
     # depends_on('alpaka@0.3', when='+alpaka')
     depends_on('icet', type='link')
     depends_on('mpi', type='link')
+    depends_on('glm@0.9.9.8:', when='@develop')
 
     root_cmakelists_dir = 'lib'
