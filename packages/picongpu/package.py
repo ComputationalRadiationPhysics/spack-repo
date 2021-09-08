@@ -60,9 +60,11 @@ class Picongpu(Package):
     variant('png', default=True,
             description='Enable the PNG plugin')
     variant('hdf5', default=True,
-            description='Enable multiple plugins requiring HDF5')
+            description='Enable multiple plugins requiring HDF5,'
+                        '(only available for <=0.5.X)')
     variant('adios', default=False,
-            description='Enable the ADIOS plugin')
+            description='Enable the ADIOS plugin,'
+                        '(only available for <=0.5.X)')
     variant('isaac', default=False,
             description='Enable the ISAAC plugin')
     variant('openpmd',
@@ -83,12 +85,14 @@ class Picongpu(Package):
     depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='backend=cuda ^cuda@9:')
     depends_on('mpi@2.3:', type=['link', 'run'])  # note: NOT cuda aware!
     depends_on('pngwriter@0.7.0,develop', when='+png')
-    depends_on('libsplash@1.7.0,develop', when='+hdf5')
-    depends_on('adios@1.13.1:,develop', when='+adios')
+    depends_on('libsplash@1.7.0,develop', when='@:0.5.0 +hdf5')
+    depends_on('adios@1.13.1:,develop', when='@:0.5.0 +adios')
     depends_on('isaac@1.4.0', when='@:0.4.3 +isaac')
+    depends_on('isaac@1.5.2', when='@:0.5.0 +isaac')
+    depends_on('isaac@develop', when='@develop +isaac')
     depends_on('isaac-server@1.4.0', type='run', when='@:0.4.3 +isaac')
-    depends_on('isaac@1.5.2,develop', when='@0.5.0: +isaac')
-    depends_on('isaac-server@1.5.2,develop', type='run', when='@0.5.0: +isaac')
+    depends_on('isaac-server@1.5.2', type='run', when='@:0.5.0 +isaac')
+    depends_on('isaac-server@develop', type='run', when='@develop +isaac')
     depends_on('openpmd-api@0.13.2:,dev', when='@develop +openpmd')
 
     # shipped internal dependencies
