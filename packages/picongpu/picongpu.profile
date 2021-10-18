@@ -6,7 +6,7 @@ export PIC_PROFILE=$(cd $(dirname $BASH_SOURCE) && pwd)"/"$(basename $BASH_SOURC
 spack load @PIC_SPACK_COMPILER@ >/dev/null 2>&1 || echo "using default compiler"
 
 # required: PIConGPU and its dependencies
-spack load -r @PIC_SPACK_SPEC@
+spack load @PIC_SPACK_SPEC@
 
 # activate bash completion if available
 PIC_COMP_FILE=$PICSRC/bin/picongpu-completion.bash
