@@ -27,6 +27,9 @@ class Picongpu(Package):
             git='file://{0}/src/picongpu'.format(home))
     # version('master', branch='master',
     #         git='https://github.com/ComputationalRadiationPhysics/picongpu.git')
+    version('0.6.0',
+            preferred=True,
+            sha256='b852203761b9ebf354209c09992371912e88da7c7245973f561436ad07f07dee')
     version('0.5.0',
             preferred=True,
             sha256='2f8225329e79fd5253b1a96565c0449928daae4e0f3b8aea0c1704db33444ce9')
@@ -73,27 +76,32 @@ class Picongpu(Package):
     # @TODO add type=('link, 'run') to all these?
     # @TODO define supported ranges instead of fixed versions
     depends_on('cmake@3.11.4:', type=['build', 'run'])
-    depends_on('cmake@3.15.0:', type=['build', 'run'], when='@develop')
+    depends_on('cmake@3.15.0:', type=['build', 'run'], when='@0.6.0:')
+    depends_on('cmake@3.18.0:', type=['build', 'run'], when='@develop')
     depends_on('rsync', type='run')
     depends_on('util-linux', type='run', when='platform=darwin')  # GNU getopt
     depends_on('cuda', when='backend=cuda')
     depends_on('cuda@8.0:10.0.130', when='@:0.4.3 backend=cuda')
-    depends_on('cuda@9.2:10.2.89', when='@0.5.0 backend=cuda')
-    depends_on('cuda@9.2:', when='@develop backend=cuda')
+    depends_on('cuda@9.2:10.2.89', when='@:0.5.0 backend=cuda')
+    depends_on('cuda@10.0:', when='@0.6.0: backend=cuda')
+    depends_on('cuda@11.2:', when='@develop backend=cuda')
     depends_on('zlib@1.2.11')
     depends_on('boost@1.62.0:1.70.0 cxxstd=11')
     depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.65.1:1.70.0 cxxstd=14', when='@0.6.0:')
+    depends_on('boost@1.66.0: cxxstd=17', when='@develop')
     depends_on('mpi@2.3:', type=['link', 'run'])  # note: NOT cuda aware!
     depends_on('pngwriter@0.7.0,develop', when='+png')
     depends_on('libsplash@1.7.0,develop', when='@:0.5.0 +hdf5')
     depends_on('adios@1.13.1:,develop', when='@:0.5.0 +adios')
     depends_on('isaac@1.4.0', when='@:0.4.3 +isaac')
     depends_on('isaac@1.5.2', when='@:0.5.0 +isaac')
-    depends_on('isaac@develop', when='@develop +isaac')
+    depends_on('isaac@develop', when='@develop,0.6.0: +isaac')
     depends_on('isaac-server@1.4.0', type='run', when='@:0.4.3 +isaac')
     depends_on('isaac-server@1.5.2', type='run', when='@:0.5.0 +isaac')
-    depends_on('isaac-server@develop', type='run', when='@develop +isaac')
-    depends_on('openpmd-api@0.13.2:,dev', when='@develop +openpmd')
+    depends_on('isaac-server@develop', type='run', when='@develop,0.6.0: +isaac')
+    depends_on('openpmd-api@0.13.2:', when='@0.6.0: +openpmd')
+    depends_on('openpmd-api@0.14.3:,dev cxxstd=17', when='@develop +openpmd')
 
     # shipped internal dependencies
     # @TODO get from extern!
