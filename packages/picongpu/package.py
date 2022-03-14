@@ -101,7 +101,7 @@ class Picongpu(Package):
     depends_on('isaac-server@1.5.2', type='run', when='@:0.5.0 +isaac')
     depends_on('isaac-server@develop', type='run', when='@develop,0.6.0: +isaac')
     depends_on('openpmd-api@0.13.2:', when='@0.6.0: +openpmd')
-    depends_on('openpmd-api@0.14.3:,dev cxxstd=17', when='@develop +openpmd')
+    depends_on('openpmd-api@0.14.3:,dev', when='@develop +openpmd')
 
     # shipped internal dependencies
     # @TODO get from extern!
