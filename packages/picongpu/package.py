@@ -86,8 +86,8 @@ class Picongpu(Package):
     depends_on('cuda@10.0:', when='@0.6.0: backend=cuda')
     depends_on('cuda@11.2:', when='@develop backend=cuda')
     depends_on('zlib@1.2.11')
-    depends_on('boost@1.62.0:1.70.0 cxxstd=11')
-    depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='backend=cuda ^cuda@9:')
+    depends_on('boost@1.62.0:1.70.0 cxxstd=11', when='@:0.5.0')
+    depends_on('boost@1.65.1:1.70.0 cxxstd=11', when='@:0.5.0 backend=cuda ^cuda@9:')
     depends_on('boost@1.65.1:1.70.0 cxxstd=14', when='@0.6.0:')
     depends_on('boost@1.66.0: cxxstd=17', when='@develop')
     depends_on('mpi@2.3:', type=['link', 'run'])  # note: NOT cuda aware!
